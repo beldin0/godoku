@@ -125,6 +125,21 @@ func getIndex(index int, zoneList [9][9]int) int {
 	return -1
 }
 
+func (s simpleSudokuSolver) getPossibles(index int) (possibles []int) {
+	if s.puzzle[index] != 0 {
+		return []int{s.puzzle[index]}
+	}
+	rowIndex := getIndex(index, row)
+	colIndex := getIndex(index, col)
+	sqrIndex := getIndex(index, square)
+	for i := 1; i < 10; i++ {
+		if !s.isIn(i, row[rowIndex]) && !s.isIn(i, col[colIndex]) && !s.isIn(i, square[sqrIndex]) {
+			possibles = append(possibles, i)
+		}
+	}
+	return
+}
+
 var easySudoku = []int{
 	0, 0, 3, 0, 2, 0, 6, 0, 0,
 	9, 0, 0, 3, 0, 5, 0, 0, 1,
