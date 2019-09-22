@@ -1,4 +1,4 @@
-package main
+package sudoku
 
 import (
 	"reflect"
@@ -193,7 +193,8 @@ func TestGetPossibles(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		actual := simpleSudokuSolver{test.Puzzle}.getPossibles(test.Index)
+		s := &simpleSudokuSolver{test.Puzzle}
+		actual := s.getPossibles(test.Index)
 		if !reflect.DeepEqual(test.Expected, actual) {
 			t.Fatalf("Checking for %v\nExpected: %v\tActual: %v\n", test.Index, test.Expected, actual)
 		}
@@ -230,7 +231,8 @@ func TestSimpleSolve(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		actual := simpleSudokuSolver{test.Puzzle}.Solve()
+		s := &simpleSudokuSolver{test.Puzzle}
+		actual := s.Solve()
 		if !reflect.DeepEqual(solved, actual) {
 			t.Fail()
 		}
