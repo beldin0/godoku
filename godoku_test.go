@@ -143,7 +143,7 @@ func TestGetIndex(t *testing.T) {
 }
 
 func TestGetPossibles(t *testing.T) {
-	testSudoku := simpleSudokuSolver{[]int{
+	test1 := []int{
 		0, 0, 3, 0, 2, 0, 6, 0, 0,
 		9, 0, 0, 3, 0, 5, 0, 0, 1,
 		0, 0, 1, 8, 0, 6, 4, 0, 0,
@@ -155,28 +155,84 @@ func TestGetPossibles(t *testing.T) {
 		0, 0, 2, 6, 0, 9, 5, 0, 0,
 		8, 0, 0, 2, 0, 3, 0, 0, 9,
 		0, 0, 5, 0, 1, 0, 3, 0, 0,
-	}}
+	}
 	tests := []struct {
+		Puzzle   []int
 		Index    int
 		Expected []int
 	}{
 		{
+			Puzzle:   test1,
 			Index:    0,
 			Expected: []int{4, 5},
 		},
 		{
+			Puzzle:   test1,
 			Index:    1,
 			Expected: []int{4, 5, 7, 8},
 		},
 		{
+			Puzzle:   test1,
 			Index:    80,
 			Expected: []int{2, 4, 6, 7},
 		},
+		{
+			Puzzle: []int{
+				4, 8, 3, 0, 2, 1, 6, 5, 7,
+				9, 6, 7, 3, 4, 5, 8, 2, 1,
+				2, 5, 1, 8, 7, 6, 4, 9, 3,
+				5, 4, 8, 1, 3, 2, 9, 7, 6,
+				7, 2, 9, 5, 6, 4, 1, 3, 8,
+				1, 3, 6, 7, 9, 8, 2, 4, 5,
+				3, 7, 2, 6, 8, 9, 5, 1, 4,
+				8, 1, 4, 2, 5, 3, 7, 6, 9,
+				6, 9, 5, 4, 1, 7, 3, 8, 2,
+			},
+			Index:    3,
+			Expected: []int{9},
+		},
 	}
 	for _, test := range tests {
-		actual := testSudoku.getPossibles(test.Index)
+		actual := simpleSudokuSolver{test.Puzzle}.getPossibles(test.Index)
 		if !reflect.DeepEqual(test.Expected, actual) {
 			t.Fatalf("Checking for %v\nExpected: %v\tActual: %v\n", test.Index, test.Expected, actual)
+		}
+	}
+}
+
+func TestSimpleSolve(t *testing.T) {
+	solved := []int{
+		4, 8, 3, 9, 2, 1, 6, 5, 7,
+		9, 6, 7, 3, 4, 5, 8, 2, 1,
+		2, 5, 1, 8, 7, 6, 4, 9, 3,
+		5, 4, 8, 1, 3, 2, 9, 7, 6,
+		7, 2, 9, 5, 6, 4, 1, 3, 8,
+		1, 3, 6, 7, 9, 8, 2, 4, 5,
+		3, 7, 2, 6, 8, 9, 5, 1, 4,
+		8, 1, 4, 2, 5, 3, 7, 6, 9,
+		6, 9, 5, 4, 1, 7, 3, 8, 2,
+	}
+	tests := []struct {
+		Puzzle []int
+	}{
+		{
+			Puzzle: []int{
+				4, 8, 3, 0, 2, 1, 6, 5, 7,
+				9, 6, 7, 3, 4, 5, 8, 2, 1,
+				2, 5, 1, 8, 7, 6, 4, 9, 3,
+				5, 4, 8, 1, 3, 2, 9, 7, 6,
+				7, 2, 9, 5, 6, 4, 1, 3, 8,
+				1, 3, 6, 7, 9, 8, 2, 4, 5,
+				3, 7, 2, 6, 8, 9, 5, 1, 4,
+				8, 1, 4, 2, 5, 3, 7, 6, 9,
+				6, 9, 5, 4, 1, 7, 3, 8, 2,
+			},
+		},
+	}
+	for _, test := range tests {
+		actual := simpleSudokuSolver{test.Puzzle}.Solve()
+		if !reflect.DeepEqual(solved, actual) {
+			t.Fail()
 		}
 	}
 }

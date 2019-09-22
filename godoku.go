@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 // Sudoku Solver Exercise
 // ======================
@@ -87,8 +90,32 @@ type simpleSudokuSolver struct {
 }
 
 func (s simpleSudokuSolver) Solve() []int {
-	// TODO
-	return nil
+	zeros := func() (zeros int) {
+		for i := 0; i < 81; i++ {
+			if s.puzzle[i] == 0 {
+				zeros++
+			}
+		}
+		return zeros
+	}()
+	for zeros > 0 {
+		solvedAtLeastOne := false
+		for i := 0; i < 81; i++ {
+			if s.puzzle[i] != 0 {
+				continue
+			}
+			possibles := s.getPossibles(i)
+			if len(possibles) == 1 {
+				s.puzzle[i] = possibles[0]
+				solvedAtLeastOne = true
+				zeros--
+			}
+		}
+		if !solvedAtLeastOne {
+			log.Fatalf("Unable to solve this puzzle! Still %v spaces left to fill.\n", zeros)
+		}
+	}
+	return s.puzzle
 }
 
 func solve(puzzle []int) []int {
@@ -122,12 +149,16 @@ func getIndex(index int, zoneList [9][9]int) int {
 			}
 		}
 	}
+	log.Printf("Failed to find %v in %v\n", index, zoneList)
 	return -1
 }
 
 func (s simpleSudokuSolver) getPossibles(index int) (possibles []int) {
 	if s.puzzle[index] != 0 {
 		return []int{s.puzzle[index]}
+	}
+	if index >= len(s.puzzle) {
+		log.Fatalf("Unable to calculate zone indeces for index %v\n", index)
 	}
 	rowIndex := getIndex(index, row)
 	colIndex := getIndex(index, col)
