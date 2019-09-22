@@ -114,6 +114,17 @@ func (s simpleSudokuSolver) isIn(val int, zone [9]int) bool {
 	return false
 }
 
+func getIndex(index int, zoneList [9][9]int) int {
+	for i, zone := range zoneList {
+		for _, j := range zone {
+			if index == j {
+				return i
+			}
+		}
+	}
+	return -1
+}
+
 var easySudoku = []int{
 	0, 0, 3, 0, 2, 0, 6, 0, 0,
 	9, 0, 0, 3, 0, 5, 0, 0, 1,

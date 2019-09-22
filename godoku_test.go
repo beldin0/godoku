@@ -68,3 +68,73 @@ func TestSimpleIsIn(t *testing.T) {
 		}
 	}
 }
+
+func TestGetIndex(t *testing.T) {
+	tests := []struct {
+		Index    int
+		ZoneList [9][9]int
+		Expected int
+	}{
+		{
+			Index:    0,
+			ZoneList: row,
+			Expected: 0,
+		},
+		{
+			Index:    80,
+			ZoneList: row,
+			Expected: 8,
+		},
+		{
+			Index:    32,
+			ZoneList: row,
+			Expected: 3,
+		},
+		{
+			Index:    0,
+			ZoneList: col,
+			Expected: 0,
+		},
+		{
+			Index:    80,
+			ZoneList: col,
+			Expected: 8,
+		},
+		{
+			Index:    32,
+			ZoneList: col,
+			Expected: 5,
+		},
+		{
+			Index:    0,
+			ZoneList: square,
+			Expected: 0,
+		},
+		{
+			Index:    80,
+			ZoneList: square,
+			Expected: 8,
+		},
+		{
+			Index:    32,
+			ZoneList: square,
+			Expected: 4,
+		},
+		{
+			Index:    -1,
+			ZoneList: row,
+			Expected: -1,
+		},
+		{
+			Index:    81,
+			ZoneList: row,
+			Expected: -1,
+		},
+	}
+	for _, test := range tests {
+		actual := getIndex(test.Index, test.ZoneList)
+		if test.Expected != actual {
+			t.Fatalf("Checking for %v in %v\nExpected: %v\tActual: %v\n", test.Index, test.ZoneList, test.Expected, actual)
+		}
+	}
+}
