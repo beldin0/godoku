@@ -77,8 +77,23 @@ var (
 	}
 )
 
+// SudokuSolver is the interface for an implementation of a sudoku solving algorithm
+type SudokuSolver interface {
+	Solve() []int
+}
+
+type simpleSudokuSolver struct {
+	puzzle []int
+}
+
+func (s simpleSudokuSolver) Solve() []int {
+	// TODO
+	return nil
+}
+
 func solve(puzzle []int) []int {
-	return puzzle
+	s := simpleSudokuSolver{puzzle}
+	return s.Solve()
 }
 
 func compare(puzzle []int, completePuzzle []int) bool {
@@ -88,6 +103,15 @@ func compare(puzzle []int, completePuzzle []int) bool {
 		}
 	}
 	return true
+}
+
+func (s simpleSudokuSolver) isIn(val int, zone [9]int) bool {
+	for _, n := range zone {
+		if s.puzzle[n] == val {
+			return true
+		}
+	}
+	return false
 }
 
 var easySudoku = []int{
